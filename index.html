@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frontend Mentor | Mortgage repayment calculator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="wrapper">
+
+  <!-- FORM -->
+  <div class="section1">
+    <div class="form-header">
+      <h2>Mortgage Calculator</h2>
+      <button id="reset">clear all</button>
+    </div>
+
+    <!-- Mortgage Amount -->
+    <div class="field" id="field-amount">
+      <label for="input-amount">Mortgage Amount</label>
+      <div class="input-wrap">
+        <span class="addon addon-left">£</span>
+        <input type="number" id="input-amount" placeholder="0">
+      </div>
+      <span class="error-msg">This field is required</span>
+    </div>
+
+    <!-- Mortgage Term -->
+    <div class="field" id="field-term">
+      <label for="input-term">Mortgage Term</label>
+      <div class="input-wrap">
+        <input type="number" id="input-term" placeholder="0">
+        <span class="addon">years</span>
+      </div>
+      <span class="error-msg">This field is required</span>
+    </div>
+
+    <!-- Interest Rate -->
+    <div class="field" id="field-rate">
+      <label for="input-rate">Interest Rate</label>
+      <div class="input-wrap">
+        <input type="number" id="input-rate" placeholder="0" step="0.01">
+        <span class="addon">%</span>
+      </div>
+      <span class="error-msg">This field is required</span>
+    </div>
+
+    <!-- Mortgage Type -->
+    <div class="field" id="field-type">
+      <p class="mortgage-type-label">Mortgage Type</p>
+
+      <label class="radio-option" id="label-repayment">
+        <input type="radio" name="mortgageType" value="repayment">
+        <span>Repayment</span>
+      </label>
+
+      <label class="radio-option" id="label-interest">
+        <input type="radio" name="mortgageType" value="interest">
+        <span>Interest Only</span>
+      </label>
+
+      <span class="error-msg" id="type-error">Please select a mortgage type</span>
+    </div>
+
+    <!-- Calculate Button -->
+    <button class="calc-btn" id="calc-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#133041" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="4" y="2" width="16" height="20" rx="2"/>
+        <line x1="8" y1="6" x2="16" y2="6"/>
+        <line x1="8" y1="10" x2="10" y2="10"/>
+        <line x1="14" y1="10" x2="16" y2="10"/>
+        <line x1="8" y1="14" x2="10" y2="14"/>
+        <line x1="14" y1="14" x2="16" y2="14"/>
+        <line x1="8" y1="18" x2="10" y2="18"/>
+        <line x1="14" y1="18" x2="16" y2="18"/>
+      </svg>
+      Calculate Repayments
+    </button>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results-section">
+    <h2>Your results</h2>
+
+    <div class="empty-state" id="empty-state">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none">
+        <circle cx="40" cy="40" r="38" stroke="#1e3a50" stroke-width="2"/>
+        <path d="M26 54 L40 26 L54 54" stroke="#c8f000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="30" y1="46" x2="50" y2="46" stroke="#c8f000" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <p>Complete the form and click "calculate repayments" to see what your monthly repayments would be.</p>
+    </div>
+
+    <p class="subtitle" id="result-subtitle" style="display:none;">
+      Your results are shown below based on the information you provided.
+      To adjust the results, edit the form and click "calculate repayments" again.
+    </p>
+
+    <div class="card" id="result-card">
+      <div class="card-row">
+        <div class="label">Your monthly repayments</div>
+        <div class="amount highlight" id="monthly-result">£0.00</div>
+      </div>
+      <div class="card-row">
+        <div class="label">Total you'll repay over the term</div>
+        <div class="amount white" id="total-result">£0.00</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
