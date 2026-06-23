@@ -3,74 +3,129 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <title>Mortgage repayment</title>
+  <title>Mortgage Repayment</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { jakarta: ["'Plus Jakarta Sans'", 'sans-serif'] },
+          colors: {
+            lime:    '#c8f000',
+            limehov: '#b5d900',
+            navy:    '#133041',
+            dark:    '#0f2235',
+            darker:  '#0a1a28',
+            steel:   '#6b8fa3',
+            muted:   '#8da3b5',
+            border:  '#ccdde8',
+            tint:    '#eaf4fb',
+            limebg:  '#f7fce0',
+            err:     '#d73c3c',
+            errbg:   '#fdecea',
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Minimal CSS only for JS-toggled state classes -->
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+    /* Error state */
+    .field.has-error .input-wrap        { border-color: #d73c3c !important; }
+    .field.has-error .addon             { background: #fdecea !important; color: #d73c3c !important; }
+    .field.has-error .error-msg         { display: block !important; }
+    #field-type.has-error #type-error   { display: block !important; }
+
+    /* Selected radio */
+    .radio-option.selected { border-color: #c8f000; background: #f7fce0; }
+
+    /* Result card visibility */
+    .card { display: none; }
+    .card.visible { display: block; }
+
+    /* Hide spinner on number inputs */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+    input[type=number] { -moz-appearance: textfield; }
+  </style>
 </head>
-<body>
+<body class="bg-[#e3f0f8] min-h-screen flex items-center justify-center p-5">
 
-<div class="wrapper">
+<div class="w-full max-w-[460px] md:max-w-[860px] md:flex rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.15)]">
 
-  <!-- FORM -->
-  <div class="section1">
-    <div class="form-header">
-      <h2>Mortgage Calculator</h2>
-      <button id="reset">clear all</button>
+  <!-- FORM SECTION -->
+  <div class="bg-white px-6 py-7 md:px-8 md:py-9 md:w-1/2 flex-shrink-0">
+
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-[1.3rem] font-bold text-navy">Mortgage Calculator</h2>
+      <button id="reset" class="bg-transparent border-none underline text-steel text-[0.9rem] cursor-pointer hover:text-navy transition-colors">clear all</button>
     </div>
 
     <!-- Mortgage Amount -->
-    <div class="field" id="field-amount">
-      <label for="input-amount">Mortgage Amount</label>
-      <div class="input-wrap">
-        <span class="addon addon-left">£</span>
-        <input type="number" id="input-amount" placeholder="0">
+    <div class="field flex flex-col gap-2 mb-5" id="field-amount">
+      <label for="input-amount" class="text-[0.88rem] font-medium text-steel">Mortgage Amount</label>
+      <div class="input-wrap flex border-[1.5px] border-border rounded-lg overflow-hidden transition-colors focus-within:border-lime">
+        <span class="addon addon-left order-first bg-tint px-4 py-3 font-semibold text-[0.95rem] text-[#4a7d99]">£</span>
+        <input type="number" id="input-amount" placeholder="0"
+               class="flex-1 border-none outline-none px-3.5 py-3 text-base font-semibold text-navy bg-white">
       </div>
-      <span class="error-msg">This field is required</span>
+      <span class="error-msg hidden text-[0.78rem] text-err mt-1">This field is required</span>
     </div>
 
-    <!-- Mortgage Term -->
-    <div class="row-group">
-    <div class="field" id="field-term">
-      <label for="input-term">Mortgage Term</label>
-      <div class="input-wrap">
-        <input type="number" id="input-term" placeholder="0">
-        <span class="addon">years</span>
-      </div>
-      <span class="error-msg">This field is required</span>
-    </div>
+    <!-- Term + Rate row -->
+    <div class="md:flex md:gap-4">
 
-    <!-- Interest Rate -->
-    <div class="field" id="field-rate">
-      <label for="input-rate">Interest Rate</label>
-      <div class="input-wrap">
-        <input type="number" id="input-rate" placeholder="0" step="0.01">
-        <span class="addon">%</span>
+      <!-- Mortgage Term -->
+      <div class="field flex flex-col gap-2 mb-5 md:flex-1" id="field-term">
+        <label for="input-term" class="text-[0.88rem] font-medium text-steel">Mortgage Term</label>
+        <div class="input-wrap flex border-[1.5px] border-border rounded-lg overflow-hidden transition-colors focus-within:border-lime">
+          <input type="number" id="input-term" placeholder="0"
+                 class="flex-1 border-none outline-none px-3.5 py-3 text-base font-semibold text-navy bg-white">
+          <span class="addon bg-tint px-4 py-3 font-semibold text-[0.95rem] text-[#4a7d99] whitespace-nowrap">years</span>
+        </div>
+        <span class="error-msg hidden text-[0.78rem] text-err mt-1">This field is required</span>
       </div>
-      <span class="error-msg">This field is required</span>
-    </div>
+
+      <!-- Interest Rate -->
+      <div class="field flex flex-col gap-2 mb-5 md:flex-1" id="field-rate">
+        <label for="input-rate" class="text-[0.88rem] font-medium text-steel">Interest Rate</label>
+        <div class="input-wrap flex border-[1.5px] border-border rounded-lg overflow-hidden transition-colors focus-within:border-lime">
+          <input type="number" id="input-rate" placeholder="0" step="0.01"
+                 class="flex-1 border-none outline-none px-3.5 py-3 text-base font-semibold text-navy bg-white">
+          <span class="addon bg-tint px-4 py-3 font-semibold text-[0.95rem] text-[#4a7d99]">%</span>
+        </div>
+        <span class="error-msg hidden text-[0.78rem] text-err mt-1">This field is required</span>
+      </div>
+
     </div>
 
     <!-- Mortgage Type -->
-    <div class="field" id="field-type">
-      <p class="mortgage-type-label">Mortgage Type</p>
+    <div class="field flex flex-col gap-2 mb-5" id="field-type">
+      <p class="text-[0.88rem] font-bold text-navy mb-1">Mortgage Type</p>
 
-      <label class="radio-option" id="label-repayment">
-        <input type="radio" name="mortgageType" value="repayment">
-        <span>Repayment</span>
+      <label class="radio-option flex items-center gap-3.5 border-[1.5px] border-border rounded-lg px-4 py-3 cursor-pointer hover:border-lime transition-colors" id="label-repayment">
+        <input type="radio" name="mortgageType" value="repayment"
+               class="accent-lime w-[18px] h-[18px] cursor-pointer flex-shrink-0">
+        <span class="font-semibold text-[0.95rem] text-navy">Repayment</span>
       </label>
 
-      <label class="radio-option" id="label-interest">
-        <input type="radio" name="mortgageType" value="interest">
-        <span>Interest Only</span>
+      <label class="radio-option flex items-center gap-3.5 border-[1.5px] border-border rounded-lg px-4 py-3 cursor-pointer hover:border-lime transition-colors" id="label-interest">
+        <input type="radio" name="mortgageType" value="interest"
+               class="accent-lime w-[18px] h-[18px] cursor-pointer flex-shrink-0">
+        <span class="font-semibold text-[0.95rem] text-navy">Interest Only</span>
       </label>
 
-      <span class="error-msg" id="type-error">Please select a mortgage type</span>
+      <span class="error-msg hidden text-[0.78rem] text-err mt-1" id="type-error">Please select a mortgage type</span>
     </div>
 
     <!-- Calculate Button -->
-    <button class="calc-btn" id="calc-btn">
-      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#133041" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <button id="calc-btn"
+            class="flex items-center justify-center gap-2.5 w-full py-4 bg-lime hover:bg-limehov active:scale-[0.98] rounded-full text-base font-bold text-navy cursor-pointer mt-2 transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+           stroke="#133041" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <rect x="4" y="2" width="16" height="20" rx="2"/>
         <line x1="8" y1="6" x2="16" y2="6"/>
         <line x1="8" y1="10" x2="10" y2="10"/>
@@ -84,38 +139,45 @@
     </button>
   </div>
 
-  <!-- RESULTS -->
-  <div class="results-section">
-    <h2>Your results</h2>
+  <!-- RESULTS SECTION -->
+  <div class="bg-dark px-6 py-7 md:px-8 md:py-9 md:w-1/2 md:flex md:flex-col md:justify-center">
+    <h2 class="text-white text-[1.3rem] font-bold mb-3">Your results</h2>
 
-    <div class="empty-state" id="empty-state">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none">
+    <!-- Empty state -->
+    <div class="empty-state flex flex-col items-center text-center pt-2.5 pb-1.5" id="empty-state">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none"
+           class="w-20 h-20 mb-5 opacity-60">
         <circle cx="40" cy="40" r="38" stroke="#1e3a50" stroke-width="2"/>
         <path d="M26 54 L40 26 L54 54" stroke="#c8f000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
         <line x1="30" y1="46" x2="50" y2="46" stroke="#c8f000" stroke-width="2.5" stroke-linecap="round"/>
       </svg>
-      <p>Complete the form and click "calculate repayments" to see what your monthly repayments would be.</p>
+      <p class="text-muted text-[0.88rem] leading-relaxed">
+        Complete the form and click "calculate repayments" to see what your monthly repayments would be.
+      </p>
     </div>
 
-    <p class="subtitle" id="result-subtitle" style="display:none;">
+    <!-- Result subtitle -->
+    <p class="text-muted text-[0.88rem] leading-[1.65] mb-6" id="result-subtitle" style="display:none;">
       Your results are shown below based on the information you provided.
       To adjust the results, edit the form and click "calculate repayments" again.
     </p>
 
-    <div class="card" id="result-card">
-      <div class="card-row">
-        <div class="label">Your monthly repayments</div>
-        <div class="amount highlight" id="monthly-result">£0.00</div>
+    <!-- Result card -->
+    <div class="card bg-darker border border-[#1e3a50] border-t-[3px] border-t-lime rounded-2xl overflow-hidden" id="result-card">
+      <div class="card-row px-5 py-[22px]">
+        <div class="text-muted text-[0.85rem] mb-2">Your monthly repayments</div>
+        <div class="text-[2rem] font-bold tracking-[-0.5px] text-lime" id="monthly-result">£0.00</div>
       </div>
-      <div class="card-row">
-        <div class="label">Total you'll repay over the term</div>
-        <div class="amount white" id="total-result">£0.00</div>
+      <div class="card-row px-5 py-[22px] border-t border-[#1e3a50]">
+        <div class="text-muted text-[0.85rem] mb-2">Total you'll repay over the term</div>
+        <div class="text-[1.5rem] font-bold tracking-[-0.5px] text-white" id="total-result">£0.00</div>
       </div>
     </div>
   </div>
 
 </div>
 
-<script src="main.js"></script>
+<script src="main.js">
+</script>
 </body>
 </html>
